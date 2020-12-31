@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "env-cmd nodemon",
     "build": "tsc",
-    "start": "node ./build/index.js"
+    "start": "env-cmd pm2 start ./build/index.js"
   },
   "author": "Sihoon Kim",
   "license": "ISC",
