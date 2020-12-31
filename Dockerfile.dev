@@ -1,0 +1,10 @@
+# builder stage
+FROM node:14.14.0-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --quiet 
+COPY . .
+CMD ["npm", "run", "dev"]
+
+# docker build -f Dockerfile.dev .
+# docker image ls
