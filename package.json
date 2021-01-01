@@ -7,7 +7,7 @@
     "dev": "env-cmd nodemon",
     "clean": "del ./build/*",
     "build": "tsc",
-    "start": "env-cmd node ./build/index.js"
+    "start": "env-cmd pm2 start ./build/index.js"
   },
   "author": "Sihoon Kim",
   "license": "ISC",
