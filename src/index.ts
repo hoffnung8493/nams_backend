@@ -46,8 +46,9 @@ const start = async () => {
         return error;
       },
     });
-    return server.listen(4000, () =>
-      console.log(`server listening on PORT 4000`)
+    const { PORT } = process.env;
+    return server.listen(PORT, () =>
+      console.log(`server listening on PORT ${PORT}`)
     );
   } catch (err) {
     console.error(err);

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "env-cmd nodemon",
+    "clean": "del ./build/*",
     "build": "tsc",
     "start": "env-cmd pm2 start ./build/index.js"
   },
