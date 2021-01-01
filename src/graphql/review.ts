@@ -41,6 +41,7 @@ export class ReviewResolver {
     @Arg("content") content: string,
     @Ctx() { userId, isAdmin }: Context
   ): Promise<Review> {
+    if (!userId) throw new Error("로그인을 해주세요.");
     const user = await UserModel.findById(userId);
     if (!user) throw new Error("존재하지 않는 회원정보입니다.");
     const review = await ReviewModel.create({

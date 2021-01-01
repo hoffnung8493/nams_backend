@@ -30,6 +30,7 @@ export class CommentResolver {
     @Arg("content") content: string,
     @Ctx() { userId, isAdmin }: Context
   ): Promise<Comment> {
+    if (!userId) throw new Error("로그인을 해주세요.");
     const [user, review] = await Promise.all([
       UserModel.findById(userId),
       ReviewModel.findById(reviewId),

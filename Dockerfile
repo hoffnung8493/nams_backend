@@ -11,7 +11,7 @@ COPY ./src ./src
 RUN npm ci -D --quiet 
 RUN npm run build
 # production stage
-FROM node:12.13.0-alpine
+FROM node:14.14.0-alpine
 
 WORKDIR /app
 ENV NODE_ENV=production
