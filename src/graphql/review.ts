@@ -16,6 +16,7 @@ import {
   CommentModel,
 } from "../models";
 import { Context } from "../index";
+import { mongoose } from "@typegoose/typegoose";
 
 @Resolver(() => Review)
 export class ReviewResolver {
@@ -31,7 +32,14 @@ export class ReviewResolver {
     @Arg("bookNumber") bookNumber: number,
     @Arg("chapterNumber") chapterNumber: number
   ): Promise<Review[]> {
-    return ReviewModel.find({ chapterNumber, bookNumber });
+    return ReviewModel.find({ chapterNumber, bookNumber }).sort({
+      updatedAt: -1,
+    });
+  }
+
+  @Query(() => [Review])
+  async myReviews(@Ctx() { userId }: Context): Promise<Review[]> {
+    return ReviewModel.find({ user: userId }).sort({ updatedAt: -1 });
   }
 
   @Mutation(() => Review)
@@ -53,6 +61,39 @@ export class ReviewResolver {
       commentCount: 0,
     });
     return review;
+  }
+
+  @Mutation(() => Review)
+  async reviewUpdate(
+    @Arg("reviewId") reviewId: string,
+    @Arg("content") content: string,
+    @Ctx() { userId, isAdmin }: Context
+  ): Promise<Review> {
+    if (!userId) throw new Error("로그인을 해주세요.");
+    const review = await ReviewModel.findOneAndUpdate(
+      {
+        _id: reviewId,
+        user: userId,
+      },
+      { content },
+      { new: true }
+    );
+    if (!review) throw new Error("회원님이 작성한 후기가 아닙니다.");
+    return review;
+  }
+
+  @Mutation(() => Boolean)
+  async reviewDelete(
+    @Arg("reviewId") reviewId: string,
+    @Ctx() { userId, isAdmin }: Context
+  ): Promise<Boolean> {
+    if (!userId) throw new Error("로그인을 해주세요.");
+    const review = await ReviewModel.findOneAndDelete({
+      _id: reviewId,
+      user: userId,
+    });
+    if (!review) throw new Error("회원님이 작성한 후기가 아닙니다.");
+    return true;
   }
 
   @FieldResolver(() => User)

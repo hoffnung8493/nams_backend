@@ -1,9 +1,4 @@
-import {
-  modelOptions,
-  getModelForClass,
-  prop,
-  Ref,
-} from "@typegoose/typegoose";
+import { modelOptions, getModelForClass, prop } from "@typegoose/typegoose";
 import { ObjectType, Field, ID, Int } from "type-graphql";
 
 @ObjectType()
@@ -17,7 +12,7 @@ class User {
   public email!: string;
 
   @Field()
-  @prop({ required: true })
+  @prop({ required: true, unique: true })
   public nickname!: string;
 
   @prop({ required: true })

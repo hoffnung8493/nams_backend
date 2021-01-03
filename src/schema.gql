@@ -10,16 +10,24 @@ type Comment {
   user: User!
 }
 
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
 type Mutation {
   commentCreate(content: String!, reviewId: String!): Comment!
   login(email: String!, password: String!): UserTokens!
   reviewCreate(bookNumber: Float!, chapterNumber: Float!, content: String!): Review!
+  reviewDelete(reviewId: String!): Boolean!
+  reviewUpdate(content: String!, reviewId: String!): Review!
   signup(email: String!, nickname: String!, password: String!): UserTokens!
 }
 
 type Query {
   comments(reviewId: String!): [Comment!]!
   me: User
+  myReviews: [Review!]!
   review(id: String!): Review!
   reviews(bookNumber: Float!, chapterNumber: Float!): [Review!]!
   user(id: String!): User!
@@ -32,8 +40,10 @@ type Review {
   commentCount: Int!
   comments: [Comment!]!
   content: String!
+  createdAt: DateTime!
   id: ID!
   isAdmin: Boolean!
+  updatedAt: DateTime!
   user: User!
 }
 

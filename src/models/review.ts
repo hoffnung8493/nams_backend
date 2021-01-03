@@ -3,6 +3,7 @@ import {
   index,
   modelOptions,
   prop,
+  Ref,
 } from "@typegoose/typegoose";
 import { Field, ID, Int, ObjectType } from "type-graphql";
 import { User } from "./index";
@@ -26,9 +27,9 @@ class Review {
   @prop({ required: true })
   public content!: string;
 
-  @Field()
+  @Field((type) => User)
   @prop({ required: true, ref: "User" })
-  public user!: User;
+  public user!: Ref<User>;
 
   @Field()
   @prop({ default: false })
@@ -37,6 +38,12 @@ class Review {
   @Field(() => Int)
   @prop({ default: 0 })
   public commentCount!: number;
+
+  @Field()
+  public createdAt?: Date;
+
+  @Field()
+  public updatedAt?: Date;
 }
 
 const ReviewModel = getModelForClass(Review);

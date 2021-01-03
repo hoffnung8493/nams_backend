@@ -39,8 +39,12 @@ export class UserResolver {
       throw new UserInputError("이름은 2자 이상이어야 합니다.");
     if (password.length < 8)
       throw new UserInputError("비밀번호는 8자 이상이어야 합니다.");
-    let exists = await UserModel.findOne({ email });
-    if (exists) throw new UserInputError("이미 사용중인 이메일입니다.");
+    let exists = await UserModel.findOne({ $or: [{ email }, { nickname }] });
+    if (exists) {
+      if (exists.email === email)
+        throw new UserInputError("이미 사용중인 이메일입니다.");
+      else throw new UserInputError("이미 사용중인 닉네임입니다.");
+    }
     let hashedPassword = await hash(password, 10);
 
     let user = await new UserModel({
