@@ -16,7 +16,6 @@ import {
   CommentModel,
 } from "../models";
 import { Context } from "../index";
-import { mongoose } from "@typegoose/typegoose";
 
 @Resolver(() => Review)
 export class ReviewResolver {

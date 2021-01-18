@@ -33,13 +33,18 @@ const start = async () => {
       playground: true,
       introspection: true,
       context: ({ req }): Context => {
-        let token = req.headers.authorization || undefined;
-        if (!token) return {};
-        let accessToken = token.split(" ")[1];
-        if (!accessToken) return {};
-        let result = verify(accessToken, process.env.ACCESS_TOKEN_SECRET!);
-        if (!result) return {};
-        return decode(accessToken) as any;
+        try {
+          let token = req.headers.authorization || undefined;
+          if (!token) return {};
+          let accessToken = token.split(" ")[1];
+          if (!accessToken) return {};
+          let result = verify(accessToken, process.env.ACCESS_TOKEN_SECRET!);
+          if (!result) return {};
+          return decode(accessToken) as any;
+        } catch (err) {
+          console.error(err);
+          return {};
+        }
       },
       formatError: (error) => {
         console.dir(error, { depth: 30, colors: true });

@@ -2,9 +2,11 @@ import {
   getModelForClass,
   index,
   modelOptions,
+  mongoose,
   prop,
   Ref,
 } from "@typegoose/typegoose";
+import { mongo } from "mongoose";
 import { Field, ID, Int, ObjectType } from "type-graphql";
 import { User } from "./index";
 
