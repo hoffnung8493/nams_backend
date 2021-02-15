@@ -41,7 +41,6 @@ export type Mutation = {
   reviewLikeCancel: Review;
   reviewUpdate: Review;
   signup: UserTokens;
-  sync: Scalars['Boolean'];
 };
 
 
@@ -319,7 +318,6 @@ export type MutationResolvers<ContextType = MyContext, ParentType extends Resolv
   reviewLikeCancel?: Resolver<ResolversTypes['Review'], ParentType, ContextType, RequireFields<MutationReviewLikeCancelArgs, 'id'>>;
   reviewUpdate?: Resolver<ResolversTypes['Review'], ParentType, ContextType, RequireFields<MutationReviewUpdateArgs, 'content' | 'reviewId'>>;
   signup?: Resolver<ResolversTypes['UserTokens'], ParentType, ContextType, RequireFields<MutationSignupArgs, 'email' | 'nickname' | 'password'>>;
-  sync?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
 }>;
 
 export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{

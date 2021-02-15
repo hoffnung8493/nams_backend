@@ -25,7 +25,6 @@ export const schema = gql`
     reviewDelete(reviewId: String!): Boolean!
     reviewLike(id: String!): Review!
     reviewLikeCancel(id: String!): Review!
-    # sync: Boolean!
   }
 
   extend type Query {

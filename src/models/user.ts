@@ -1,4 +1,4 @@
-import { Document, Schema, model, Model, Types } from "mongoose";
+import { Document, Schema, model, Model } from "mongoose";
 
 export interface UserDoc extends Document {
   email: string;

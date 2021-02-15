@@ -74,22 +74,5 @@ export const resolvers: {
         );
       return review;
     },
-    // sync: async () => {
-    //   const reviews = await Review.find({});
-    //   const users = await User.find({});
-    //   await Promise.all(
-    //     reviews.map(async (review) => {
-    //       let user = users.find((v) => v.id === review.user.toString());
-    //       if (user)
-    //         review.user = {
-    //           userId: user.id,
-    //           nickname: user.nickname,
-    //           isAdmin: user.isAdmin,
-    //         };
-    //       await review.save();
-    //     })
-    //   );
-    //   return true;
-    // },
   },
 };
