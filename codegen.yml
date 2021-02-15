@@ -1,0 +1,17 @@
+overwrite: true
+schema: "src/graphql/**/schema.ts"
+documents: null
+generates:
+  src/graphql/__generatedTypes__.ts:
+    plugins:
+      - add:
+          content: "import { MyContext } from './context'"
+      - "typescript"
+      - "typescript-resolvers"
+    config:
+      contextType: MyContext
+      useIndexSignature: true
+      mappers:
+        Comment: ../models#CommentDoc
+        Review: ../models#ReviewDoc
+        User: ../models#UserDoc

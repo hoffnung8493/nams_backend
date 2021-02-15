@@ -1,26 +1,29 @@
-import { getModelForClass, modelOptions, prop } from "@typegoose/typegoose";
-import { Field, ID, ObjectType } from "type-graphql";
-import { User } from "./index";
+import { Document, Schema, model, Model, Types } from "mongoose";
 
-@ObjectType()
-@modelOptions({ schemaOptions: { timestamps: true } })
-class Comment {
-  @Field(() => ID)
-  public id!: string;
-
-  @Field()
-  @prop({ required: true })
-  public reviewId!: string;
-
-  @Field()
-  @prop({ required: true })
-  public content!: string;
-
-  @Field()
-  @prop({ required: true, ref: "User" })
-  public user!: User;
+export interface CommentDoc extends Document {
+  id: string;
+  reviewId: string;
+  content: string;
+  user: {
+    userId: string;
+    nickname: string;
+    isAdmin: boolean;
+  };
+  likeCount: Number;
+  likes: String[];
 }
 
-const CommentModel = getModelForClass(Comment);
+export interface CommentModel extends Model<CommentDoc> {}
 
-export { CommentModel, Comment };
+export const CommentSchema = new Schema({
+  reviewId: { required: true, type: Types.ObjectId },
+  content: { required: true, type: String },
+  user: { userId: Types.ObjectId, nickname: String, isAdmin: Boolean },
+  likeCount: { required: true, type: Number, default: 0 },
+  likes: [Types.ObjectId],
+});
+
+export const Comment = model<CommentDoc, CommentModel>(
+  "Comment",
+  CommentSchema
+);

@@ -4,15 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "env-cmd nodemon",
+    "dev": "env-cmd nodemon & graphql-codegen --watch",
     "clean": "del ./build/*",
     "build": "tsc",
-    "start": "env-cmd node ./build/index.js"
+    "start": "env-cmd node ./build/index.js",
+    "generate": "graphql-codegen --config codegen.yml"
   },
   "author": "Sihoon Kim",
   "license": "ISC",
   "dependencies": {
-    "@typegoose/typegoose": "^7.4.5",
+    "@graphql-codegen/cli": "^1.20.1",
     "apollo-server": "^2.19.0",
     "bcryptjs": "^2.4.3",
     "dataloader": "^2.0.0",
@@ -20,10 +21,13 @@
     "g": "^2.0.1",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.20",
-    "mongoose": "^5.11.4",
-    "type-graphql": "^1.1.1"
+    "mongoose": "^5.11.4"
   },
   "devDependencies": {
+    "@graphql-codegen/add": "^2.0.2",
+    "@graphql-codegen/cli": "1.20.1",
+    "@graphql-codegen/typescript": "1.21.0",
+    "@graphql-codegen/typescript-resolvers": "1.18.2",
     "@types/bcryptjs": "^2.4.2",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/lodash": "^4.14.165",

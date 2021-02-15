@@ -1,15 +1,8 @@
 import mongoose from "mongoose";
-import { buildSchema } from "type-graphql";
-import { UserResolver, ReviewResolver, CommentResolver } from "./graphql/index";
+import { schema, resolvers } from "./graphql";
 import { ApolloServer } from "apollo-server";
-import * as path from "path";
 import { verify, decode } from "jsonwebtoken";
-
-export interface Context {
-  userId?: string;
-  nickname?: string;
-  isAdmin?: boolean;
-}
+import { MyContext } from "./graphql/context";
 
 const start = async () => {
   try {
@@ -23,16 +16,12 @@ const start = async () => {
     });
     console.log("Connected to MongoDB.");
 
-    const schema = await buildSchema({
-      resolvers: [UserResolver, ReviewResolver, CommentResolver],
-      emitSchemaFile: path.resolve(__dirname, "schema.gql"),
-    });
-
     const server = new ApolloServer({
-      schema,
+      typeDefs: schema,
+      resolvers,
       playground: true,
       introspection: true,
-      context: ({ req }): Context => {
+      context: ({ req }): MyContext => {
         try {
           let token = req.headers.authorization || undefined;
           if (!token) return {};

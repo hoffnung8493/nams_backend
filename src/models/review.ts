@@ -1,53 +1,38 @@
-import {
-  getModelForClass,
-  index,
-  modelOptions,
-  mongoose,
-  prop,
-  Ref,
-} from "@typegoose/typegoose";
-import { mongo } from "mongoose";
-import { Field, ID, Int, ObjectType } from "type-graphql";
-import { User } from "./index";
+import { Document, Schema, model, Model, Types } from "mongoose";
+import { CommentDoc, CommentSchema } from "./comment";
 
-@index({ bookId: 1, chapterId: 1 })
-@ObjectType()
-@modelOptions({ schemaOptions: { timestamps: true } })
-class Review {
-  @Field(() => ID)
-  public id!: string;
-
-  @Field(() => Int)
-  @prop({ required: true })
-  public bookNumber!: number;
-
-  @Field(() => Int)
-  @prop({ required: true })
-  public chapterNumber!: number;
-
-  @Field()
-  @prop({ required: true })
-  public content!: string;
-
-  @Field((type) => User)
-  @prop({ required: true, ref: "User" })
-  public user!: Ref<User>;
-
-  @Field()
-  @prop({ default: false })
-  public isAdmin?: boolean;
-
-  @Field(() => Int)
-  @prop({ default: 0 })
-  public commentCount!: number;
-
-  @Field()
-  public createdAt?: Date;
-
-  @Field()
-  public updatedAt?: Date;
+export interface ReviewDoc extends Document {
+  id: string;
+  bookNumber: number;
+  chapterNumber: number;
+  content: string;
+  user: {
+    userId: string;
+    nickname: string;
+    isAdmin: boolean;
+  };
+  commentCount: number;
+  comments: CommentDoc[];
+  likeCount: Number;
+  likes: String[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-const ReviewModel = getModelForClass(Review);
+export interface ReviewModel extends Model<ReviewDoc> {}
 
-export { ReviewModel, Review };
+export const ReviewSchema = new Schema(
+  {
+    bookNumber: { required: true, type: Number },
+    chapterNumber: { required: true, type: Number },
+    content: { required: true, type: String },
+    user: { userId: Types.ObjectId, nickname: String, isAdmin: Boolean },
+    commentCount: { required: true, type: Number, default: 0 },
+    comments: [CommentSchema],
+    likeCount: { required: true, type: Number, default: 0 },
+    likes: [Types.ObjectId],
+  },
+  { timestamps: true }
+);
+
+export const Review = model<ReviewDoc, ReviewModel>("Review", ReviewSchema);

@@ -1,32 +1,26 @@
-import { modelOptions, getModelForClass, prop } from "@typegoose/typegoose";
-import { ObjectType, Field, ID, Int } from "type-graphql";
+import { Document, Schema, model, Model, Types } from "mongoose";
 
-@ObjectType()
-@modelOptions({ schemaOptions: { timestamps: true } })
-class User {
-  @Field(() => ID)
-  public id?: string;
-
-  @Field()
-  @prop({ required: true, unique: true })
-  public email!: string;
-
-  @Field()
-  @prop({ required: true, unique: true })
-  public nickname!: string;
-
-  @prop({ required: true })
-  public password!: string;
-
-  @Field(() => Int)
-  @prop({ required: true, default: 0 })
-  public version!: number;
-
-  @Field()
-  @prop({ required: true, default: false })
-  public isAdmin!: boolean;
+export interface UserDoc extends Document {
+  email: string;
+  nickname: string;
+  password: string;
+  version: number;
+  isAdmin: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-const UserModel = getModelForClass(User);
+export interface UserModel extends Model<UserDoc> {}
 
-export { UserModel, User };
+export const UserSchema = new Schema(
+  {
+    email: { required: true, type: String },
+    nickname: { required: true, type: String },
+    password: { required: true, type: String },
+    version: { required: true, type: Number, default: 0 },
+    isAdmin: { required: true, type: Boolean, default: false },
+  },
+  { timestamps: true }
+);
+
+export const User = model<UserDoc, UserModel>("User", UserSchema);
