@@ -7,6 +7,6 @@ export const schema = gql`
   type NestedUser {
     userId: String!
     nickname: String!
-    isAdmin: Boolean!
+    isAdmin: Boolean
   }
 `;

@@ -2,12 +2,14 @@ import { gql } from "apollo-server";
 
 export const schema = gql`
   type Comment {
-    content: String!
     id: ID!
     reviewId: String!
+    content: String!
     user: NestedUser!
     likeCount: Int!
     likes: [String!]!
+    createdAt: DateTime!
+    updatedAt: DateTime!
   }
 
   extend type Mutation {

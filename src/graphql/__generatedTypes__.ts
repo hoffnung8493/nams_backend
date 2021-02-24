@@ -19,12 +19,14 @@ export type Scalars = {
 
 export type Comment = {
   __typename?: 'Comment';
-  content: Scalars['String'];
   id: Scalars['ID'];
   reviewId: Scalars['String'];
+  content: Scalars['String'];
   user: NestedUser;
   likeCount: Scalars['Int'];
   likes: Array<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type Mutation = {
@@ -148,22 +150,22 @@ export type NestedUser = {
   __typename?: 'NestedUser';
   userId: Scalars['String'];
   nickname: Scalars['String'];
-  isAdmin: Scalars['Boolean'];
+  isAdmin?: Maybe<Scalars['Boolean']>;
 };
 
 export type Review = {
   __typename?: 'Review';
+  id: Scalars['ID'];
   bookNumber: Scalars['Int'];
   chapterNumber: Scalars['Int'];
-  commentCount: Scalars['Int'];
-  comments: Array<Comment>;
-  content: Scalars['String'];
-  createdAt: Scalars['DateTime'];
-  id: Scalars['ID'];
-  updatedAt: Scalars['DateTime'];
   user: NestedUser;
-  likeCount: Scalars['Int'];
+  content: Scalars['String'];
+  comments: Array<Comment>;
+  commentCount: Scalars['Int'];
   likes: Array<Scalars['String']>;
+  likeCount: Scalars['Int'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type User = {
@@ -264,8 +266,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   Comment: ResolverTypeWrapper<CommentDoc>;
-  String: ResolverTypeWrapper<Scalars['String']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
+  String: ResolverTypeWrapper<Scalars['String']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
@@ -281,8 +283,8 @@ export type ResolversTypes = ResolversObject<{
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Comment: CommentDoc;
-  String: Scalars['String'];
   ID: Scalars['ID'];
+  String: Scalars['String'];
   Int: Scalars['Int'];
   Mutation: {};
   Boolean: Scalars['Boolean'];
@@ -296,12 +298,14 @@ export type ResolversParentTypes = ResolversObject<{
 }>;
 
 export type CommentResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Comment'] = ResolversParentTypes['Comment']> = ResolversObject<{
-  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   reviewId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   user?: Resolver<ResolversTypes['NestedUser'], ParentType, ContextType>;
   likeCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   likes?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -337,22 +341,22 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
 export type NestedUserResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['NestedUser'] = ResolversParentTypes['NestedUser']> = ResolversObject<{
   userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   nickname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  isAdmin?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  isAdmin?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type ReviewResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Review'] = ResolversParentTypes['Review']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   bookNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   chapterNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  commentCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  comments?: Resolver<Array<ResolversTypes['Comment']>, ParentType, ContextType>;
-  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   user?: Resolver<ResolversTypes['NestedUser'], ParentType, ContextType>;
-  likeCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  comments?: Resolver<Array<ResolversTypes['Comment']>, ParentType, ContextType>;
+  commentCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   likes?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  likeCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

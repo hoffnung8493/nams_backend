@@ -55,7 +55,7 @@ export const resolvers: {
     reviewLike: async (_, { id }, { userId }) => {
       const review = await Review.findOneAndUpdate(
         { _id: id, likes: { $ne: userId } },
-        { $inc: { likesCount: 1 }, $push: { likes: userId } },
+        { $inc: { likeCount: 1 }, $push: { likes: userId } },
         { new: true }
       );
       if (!review)
@@ -65,7 +65,7 @@ export const resolvers: {
     reviewLikeCancel: async (_, { id }, { userId }) => {
       const review = await Review.findOneAndUpdate(
         { _id: id, likes: userId },
-        { $inc: { likesCount: -1 }, $pull: { likes: userId } },
+        { $inc: { likeCount: -1 }, $pull: { likes: userId } },
         { new: true }
       );
       if (!review)

@@ -31,6 +31,8 @@ const start = async () => {
           if (!result) return {};
           return decode(accessToken) as any;
         } catch (err) {
+          if (["invalid signature", "jwt expired"].includes(err.message))
+            return {};
           console.error(err);
           return {};
         }
