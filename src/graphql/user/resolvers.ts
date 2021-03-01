@@ -64,6 +64,35 @@ export const resolvers: {
       });
       return { accessToken, refreshToken, user };
     },
+    doMyForm: async (_, { formResult }, { userId }) => {
+      if (!userId) throw new Error("로그인 해주고 이용해주세요.");
+      if (formResult.length !== 25)
+        throw new Error("설문조사 25문항을 모두 답변해주세요");
+      if (formResult.filter((v) => v < 0 || v > 4).length > 0)
+        throw new Error("설문 답변은 각각 0~4이어야 합니다.");
+      const user = await User.findOneAndUpdate(
+        { _id: userId },
+        { formResult },
+        { new: true }
+      );
+      if (!user) throw new Error("존재하지 않는 회원입니다.");
+      return user;
+    },
+    doPeerForm: async (_, { peerId, formResult }, { userId }) => {
+      if (!userId) throw new Error("로그인 해주고 이용해주세요.");
+      if (formResult.length !== 25)
+        throw new Error("설문조사 25문항을 모두 답변해주세요");
+      if (formResult.filter((v) => v < 0 || v > 4).length > 0)
+        throw new Error("설문 답변은 각각 0~4이어야 합니다.");
+      await User.findOneAndUpdate(
+        { _id: peerId, "peerReviews.userId": { $ne: userId } },
+        {
+          $push: { peerReviews: { userId, formResult, createdAt: new Date() } },
+        },
+        { new: true }
+      );
+      return true;
+    },
   },
 };
 

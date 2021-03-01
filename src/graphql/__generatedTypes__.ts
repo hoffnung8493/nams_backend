@@ -36,6 +36,8 @@ export type Mutation = {
   commentLike: Comment;
   commentLikeCancel: Comment;
   commentUpdate: Comment;
+  doMyForm: User;
+  doPeerForm: Scalars['Boolean'];
   login: UserTokens;
   reviewCreate: Review;
   reviewDelete: Scalars['Boolean'];
@@ -70,6 +72,17 @@ export type MutationCommentLikeCancelArgs = {
 export type MutationCommentUpdateArgs = {
   id: Scalars['String'];
   content: Scalars['String'];
+};
+
+
+export type MutationDoMyFormArgs = {
+  formResult: Array<Scalars['Int']>;
+};
+
+
+export type MutationDoPeerFormArgs = {
+  peerId: Scalars['String'];
+  formResult: Array<Scalars['Int']>;
 };
 
 
@@ -175,8 +188,19 @@ export type User = {
   nickname: Scalars['String'];
   version: Scalars['Int'];
   isAdmin: Scalars['Boolean'];
+  formResult: Array<Scalars['Int']>;
+  peerReviews: Array<PeerReview>;
+  myScore: Scalars['Int'];
+  averageScore: Scalars['Int'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
+};
+
+export type PeerReview = {
+  __typename?: 'PeerReview';
+  userId: Scalars['String'];
+  formResult: Array<Scalars['Int']>;
+  createdAt: Scalars['DateTime'];
 };
 
 export type UserTokens = {
@@ -277,6 +301,7 @@ export type ResolversTypes = ResolversObject<{
   NestedUser: ResolverTypeWrapper<NestedUser>;
   Review: ResolverTypeWrapper<ReviewDoc>;
   User: ResolverTypeWrapper<UserDoc>;
+  PeerReview: ResolverTypeWrapper<PeerReview>;
   UserTokens: ResolverTypeWrapper<Omit<UserTokens, 'user'> & { user: ResolversTypes['User'] }>;
 }>;
 
@@ -294,6 +319,7 @@ export type ResolversParentTypes = ResolversObject<{
   NestedUser: NestedUser;
   Review: ReviewDoc;
   User: UserDoc;
+  PeerReview: PeerReview;
   UserTokens: Omit<UserTokens, 'user'> & { user: ResolversParentTypes['User'] };
 }>;
 
@@ -315,6 +341,8 @@ export type MutationResolvers<ContextType = MyContext, ParentType extends Resolv
   commentLike?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationCommentLikeArgs, 'id'>>;
   commentLikeCancel?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationCommentLikeCancelArgs, 'id'>>;
   commentUpdate?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationCommentUpdateArgs, 'id' | 'content'>>;
+  doMyForm?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationDoMyFormArgs, 'formResult'>>;
+  doPeerForm?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDoPeerFormArgs, 'peerId' | 'formResult'>>;
   login?: Resolver<ResolversTypes['UserTokens'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
   reviewCreate?: Resolver<ResolversTypes['Review'], ParentType, ContextType, RequireFields<MutationReviewCreateArgs, 'bookNumber' | 'chapterNumber' | 'content'>>;
   reviewDelete?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationReviewDeleteArgs, 'reviewId'>>;
@@ -366,8 +394,19 @@ export type UserResolvers<ContextType = MyContext, ParentType extends ResolversP
   nickname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   version?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   isAdmin?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  formResult?: Resolver<Array<ResolversTypes['Int']>, ParentType, ContextType>;
+  peerReviews?: Resolver<Array<ResolversTypes['PeerReview']>, ParentType, ContextType>;
+  myScore?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  averageScore?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type PeerReviewResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['PeerReview'] = ResolversParentTypes['PeerReview']> = ResolversObject<{
+  userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  formResult?: Resolver<Array<ResolversTypes['Int']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -386,6 +425,7 @@ export type Resolvers<ContextType = MyContext> = ResolversObject<{
   NestedUser?: NestedUserResolvers<ContextType>;
   Review?: ReviewResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
+  PeerReview?: PeerReviewResolvers<ContextType>;
   UserTokens?: UserTokensResolvers<ContextType>;
 }>;
 
