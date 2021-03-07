@@ -7,7 +7,7 @@ export interface UserDoc extends Document {
   version: number;
   isAdmin: boolean;
   formResult: number[];
-  peerReviews: { userId: string; formResult: number[]; createdAt: Date }[];
+  peerReviews: { formResult: number[]; createdAt: Date }[];
   myScore: number;
   averageScore: number;
   createdAt: Date;
@@ -26,13 +26,12 @@ export const UserSchema = new Schema(
     formResult: [{ type: Number, required: true }],
     peerReviews: [
       {
-        userId: { type: Types.ObjectId, required: true, ref: "user" },
         formResult: [{ type: Number, required: true }],
         createdAt: { type: Date, required: true },
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true, toObject: { virtuals: true }, toJSON: { virtuals: true } }
 );
 
 UserSchema.virtual("myScore").get(function () {
@@ -41,14 +40,20 @@ UserSchema.virtual("myScore").get(function () {
   return me.formResult.reduce((a, c) => a + c, 0);
 });
 
+UserSchema.virtual("peerReviewCount").get(function () {
+  //@ts-ignore
+  let me: UserDoc = this;
+  return me.peerReviews.length;
+});
+
 UserSchema.virtual("averageScore").get(function () {
   //@ts-ignore
   let me: UserDoc = this;
   if (me.peerReviews.length === 0) return 0;
-  return (
+  return Math.ceil(
     me.peerReviews
       .map((v) => v.formResult.reduce((a, c) => a + c, 0))
-      .reduce((a, c) => a + c, 0) / me.formResult.length
+      .reduce((a, c) => a + c, 0) / me.peerReviews.length
   );
 });
 

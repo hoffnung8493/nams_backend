@@ -10,6 +10,7 @@ export const schema = gql`
     formResult: [Int!]!
     peerReviews: [PeerReview!]!
     myScore: Int!
+    peerReviewCount: Int!
     averageScore: Int!
     createdAt: DateTime!
     updatedAt: DateTime!
@@ -31,6 +32,7 @@ export const schema = gql`
     signup(email: String!, nickname: String!, password: String!): UserTokens!
     doMyForm(formResult: [Int!]!): User!
     doPeerForm(peerId: String!, formResult: [Int!]!): Boolean!
+    resetMyForm: User!
   }
 
   extend type Query {

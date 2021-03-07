@@ -39,6 +39,7 @@ export type Mutation = {
   doMyForm: User;
   doPeerForm: Scalars['Boolean'];
   login: UserTokens;
+  resetMyForm: User;
   reviewCreate: Review;
   reviewDelete: Scalars['Boolean'];
   reviewLike: Review;
@@ -191,6 +192,7 @@ export type User = {
   formResult: Array<Scalars['Int']>;
   peerReviews: Array<PeerReview>;
   myScore: Scalars['Int'];
+  peerReviewCount: Scalars['Int'];
   averageScore: Scalars['Int'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
@@ -344,6 +346,7 @@ export type MutationResolvers<ContextType = MyContext, ParentType extends Resolv
   doMyForm?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationDoMyFormArgs, 'formResult'>>;
   doPeerForm?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDoPeerFormArgs, 'peerId' | 'formResult'>>;
   login?: Resolver<ResolversTypes['UserTokens'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
+  resetMyForm?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   reviewCreate?: Resolver<ResolversTypes['Review'], ParentType, ContextType, RequireFields<MutationReviewCreateArgs, 'bookNumber' | 'chapterNumber' | 'content'>>;
   reviewDelete?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationReviewDeleteArgs, 'reviewId'>>;
   reviewLike?: Resolver<ResolversTypes['Review'], ParentType, ContextType, RequireFields<MutationReviewLikeArgs, 'id'>>;
@@ -397,6 +400,7 @@ export type UserResolvers<ContextType = MyContext, ParentType extends ResolversP
   formResult?: Resolver<Array<ResolversTypes['Int']>, ParentType, ContextType>;
   peerReviews?: Resolver<Array<ResolversTypes['PeerReview']>, ParentType, ContextType>;
   myScore?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  peerReviewCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   averageScore?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
