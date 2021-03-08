@@ -47,6 +47,7 @@ export const resolvers: {
         contents: { userId: user.id, nickname },
         version: user.version,
       });
+
       return { accessToken, refreshToken, user };
     },
     login: async (_, { email, password }) => {
@@ -57,7 +58,11 @@ export const resolvers: {
       if (!(await compare(password, user.password)))
         throw new Error("비밀번호가 일치하지 않습니다.");
       const { accessToken, refreshToken } = createTokens({
-        contents: { userId: user.id, nickname: user.nickname },
+        contents: {
+          userId: user.id,
+          nickname: user.nickname,
+          isAdmin: user.isAdmin,
+        },
         version: user.version,
       });
       return { accessToken, refreshToken, user };
