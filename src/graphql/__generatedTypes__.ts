@@ -194,6 +194,8 @@ export type User = {
   myScore: Scalars['Int'];
   peerReviewCount: Scalars['Int'];
   averageScore: Scalars['Int'];
+  myScoreTopPercent: Scalars['Int'];
+  peerScoreTopPercent: Scalars['Int'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
 };
@@ -402,6 +404,8 @@ export type UserResolvers<ContextType = MyContext, ParentType extends ResolversP
   myScore?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   peerReviewCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   averageScore?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  myScoreTopPercent?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  peerScoreTopPercent?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

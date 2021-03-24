@@ -12,6 +12,8 @@ export const schema = gql`
     myScore: Int!
     peerReviewCount: Int!
     averageScore: Int!
+    myScoreTopPercent: Int!
+    peerScoreTopPercent: Int!
     createdAt: DateTime!
     updatedAt: DateTime!
   }

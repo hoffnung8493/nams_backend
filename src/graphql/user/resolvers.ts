@@ -1,13 +1,36 @@
-import { QueryResolvers, MutationResolvers } from "../__generatedTypes__";
-import { User } from "../../models";
+import {
+  QueryResolvers,
+  MutationResolvers,
+  UserResolvers,
+} from "../__generatedTypes__";
+import { User, Score } from "../../models";
 import { UserInputError } from "apollo-server";
 import { compare, hash } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 
 export const resolvers: {
+  User: UserResolvers;
   Query: QueryResolvers;
   Mutation: MutationResolvers;
 } = {
+  User: {
+    myScoreTopPercent: async (parent) => {
+      const score = await Score.findOne({});
+      if (!score) return 0;
+      return Math.round(
+        (100 * score.self.filter((v) => v > parent.myScore).length) /
+          score.self.length
+      );
+    },
+    peerScoreTopPercent: async (parent) => {
+      const score = await Score.findOne({});
+      if (!score) return 0;
+      return Math.round(
+        (100 * score.peer.filter((v) => v > parent.averageScore).length) /
+          score.peer.length
+      );
+    },
+  },
   Query: {
     user: async (_, { id }, { isAdmin }) => {
       if (!isAdmin) throw new Error("권한이 없습니다.");
@@ -78,6 +101,11 @@ export const resolvers: {
         { formResult },
         { new: true }
       );
+      await Score.findOneAndUpdate(
+        {},
+        { $push: { self: formResult.reduce((a, c) => a + c, 0) } },
+        { upsert: true }
+      );
       if (!user) throw new Error("존재하지 않는 회원입니다.");
       return user;
     },
@@ -92,6 +120,11 @@ export const resolvers: {
           $push: { peerReviews: { formResult, createdAt: new Date() } },
         },
         { new: true }
+      );
+      await Score.updateOne(
+        {},
+        { $push: { peer: formResult.reduce((a, c) => a + c, 0) } },
+        { upsert: true }
       );
       return true;
     },
