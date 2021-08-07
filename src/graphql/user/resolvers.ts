@@ -16,7 +16,11 @@ export const resolvers: {
   User: {
     myScoreTopPercent: async (parent) => {
       const score = await Score.findOne({});
-      if (!score) return 0;
+      if (!score) {
+        await new Score().save()
+        return 0;
+      }
+      if(score.self.length === 0) return 0;
       return Math.round(
         (100 * score.self.filter((v) => v > parent.myScore).length) /
           score.self.length
@@ -24,7 +28,11 @@ export const resolvers: {
     },
     peerScoreTopPercent: async (parent) => {
       const score = await Score.findOne({});
-      if (!score) return 0;
+      if (!score) {
+        await new Score().save()
+        return 0;
+      };
+      if(score.peer.length === 0) return 0;
       return Math.round(
         (100 * score.peer.filter((v) => v > parent.averageScore).length) /
           score.peer.length

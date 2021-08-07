@@ -187,7 +187,6 @@ export type User = {
   id: Scalars['ID'];
   email: Scalars['String'];
   nickname: Scalars['String'];
-  version: Scalars['Int'];
   isAdmin: Scalars['Boolean'];
   formResult: Array<Scalars['Int']>;
   peerReviews: Array<PeerReview>;
@@ -397,7 +396,6 @@ export type UserResolvers<ContextType = MyContext, ParentType extends ResolversP
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   nickname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  version?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   isAdmin?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   formResult?: Resolver<Array<ResolversTypes['Int']>, ParentType, ContextType>;
   peerReviews?: Resolver<Array<ResolversTypes['PeerReview']>, ParentType, ContextType>;

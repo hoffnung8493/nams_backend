@@ -5,7 +5,6 @@ export const schema = gql`
     id: ID!
     email: String!
     nickname: String!
-    version: Int!
     isAdmin: Boolean!
     formResult: [Int!]!
     peerReviews: [PeerReview!]!
